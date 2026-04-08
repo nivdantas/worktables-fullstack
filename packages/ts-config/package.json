@@ -1,0 +1,15 @@
+{
+  "name": "ts-config",
+  "version": "1.0.0",
+  "private": true,
+  "files": [
+    "base.json",
+    "front.json",
+    "back.json"
+  ],
+  "exports": {
+    "./base.json": "./base.json",
+    "./front.json": "./front.json",
+    "./back.json": "./back.json"
+  }
+}
