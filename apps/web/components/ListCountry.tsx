@@ -1,9 +1,13 @@
 "use client"
 
+import type { WeatherResponse as WeatherData } from "@repo/types"
 import mondaySdk from "monday-sdk-js";
 import { useState } from "react";
-import { Search } from "@vibe/core";
+import { Modal, ModalContent, ModalBasicLayout, Search } from "@vibe/core";
+import { List, ListItem, ListTitle } from "@vibe/core/next";
 import useSWR from "swr";
+import Image from 'next/image';
+
 
 export interface Country {
 	id: string;
@@ -11,7 +15,7 @@ export interface Country {
 }
 
 const monday = mondaySdk();
-const VISIBLE_COUNT = 10;
+
 
 const query = `
        query {
@@ -31,39 +35,47 @@ const fetchCountries = async (query: string) => {
 		return res.data.boards[0].items_page.items;
 	}
 
+const fetchWeather = async (url: string) => {
+	const response = await fetch(url);
+	if (!response.ok) throw new Error("Failed to fetch weather data");
+	return response.json();
+}
+
 const ListCountry = () => {
 	const [searchValue, setSearchValue] = useState("");
-	const [startIndex, setStartIndex] = useState(0);
-	const { data: countries = [], error, isLoading } = useSWR(query, fetchCountries)
 
-	if(error) return <div className="text-red-500">Error loading countries.</div>
-	if (isLoading) return <div>Loading countries...</div>;
+	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
+
+
+	const { data: countries = [], error: countriesError, isLoading: isCountriesLoading } = useSWR(query, fetchCountries)
+
+	const weatherUrl = isModalOpen && selectedCountry ? `http://localhost:3001/api/weather/${encodeURIComponent(selectedCountry)}` : null;
+
+	const { data: weatherData, error: weatherError, isLoading: isWeatherLoading}  = useSWR<WeatherData>(weatherUrl, fetchWeather);
+
+	const handleCountryClick = async (countryName: string) => {
+		setSelectedCountry(countryName);
+		setIsModalOpen(true);
+	}
+
+
+	if(countriesError) return <div className="text-red-500">Error loading countries.</div>
+	if (isCountriesLoading) return <div>Loading countries...</div>;
 
 
 	const filteredCountries = countries.filter((country: Country) =>
 		country.name.toLowerCase().includes(searchValue.toLowerCase())
 )
 
+
 	const handleSearchChange = (value: string) => {
 		setSearchValue(value);
-		setStartIndex(0);
 	}
 
-	const handleWheel = (e: React.WheelEvent<HTMLUListElement>) => {
-		if (filteredCountries.length <= VISIBLE_COUNT) return;
 
-		if (e.deltaY > 0) {
-			setStartIndex((prev) => Math.min(prev + 1, filteredCountries.length - VISIBLE_COUNT));
-		} else if (e.deltaY < 0) {
-			setStartIndex((prev) => Math.max(prev - 1, 0));
-		}
-	};
-
-	const visibleCountries = filteredCountries.slice(startIndex, startIndex + VISIBLE_COUNT);
-	const hasMoreTop = startIndex > 0;
-	const hasMoreBottom = startIndex < filteredCountries.length - VISIBLE_COUNT;
 	return (
-        <div className="flex flex-col items-center w-full max-w-md mx-auto mt-10 gap-6">
+        <main className="flex flex-col items-center w-full max-w-md mx-auto gap-6 bg-white dark:bg-[#2f314e]">
 
             <div className="w-full">
                 <Search
@@ -74,31 +86,61 @@ const ListCountry = () => {
                     size="small"
                 />
             </div>
+            <List aria-label="Countries list" className="rounded-xl" maxHeight={300}>
+                                {filteredCountries.map((country: Country) => (
+                                    <ListItem
+                                        key={country.id}
+                                        label={country.name}
+                                        value={country.name}
+										onClick={() => handleCountryClick(country.name)}
+										className="dark:text-white! hover:bg-gray-400!"
+                                    />
+                                ))}
 
-			<ul className="w-full border rounded-md p-4 flex flex-col gap-1 overflow-hidden select-none snap-y snap-mandatory" onWheel={handleWheel}>
-                {hasMoreTop && (
-                    <li className="text-center text-gray-400 font-bold tracking-widest pb-1">
-                    ▲
-                    </li>
-                )}
+                                {filteredCountries.length === 0 && (
+                                    <ListTitle className="text-center text-white py-2">
+                                        No results found
+                                    </ListTitle>
+                                )}
 
-                {visibleCountries.map((country: Country) => (
-                    <li key={country.id} className="h-10 p-2 border-b last:border-0 hover:bg-gray-50 snap-start">
-                        {country.name}
-                    </li>
-                ))}
+                            </List>
+            {/* Modal */}
+                  {isModalOpen && (
+                    <Modal id="weather-modal" show={isModalOpen} onClose={()=>{setIsModalOpen(false)}} className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+                      <ModalBasicLayout className="bg-white p-6 rounded-md min-w-75 relative text-black shadow-lg">
+                      <ModalContent>
+                        {isWeatherLoading && <p className="text-center py-4">Loading weather data...</p>}
 
-                {filteredCountries.length === 0 && (
-                    <li className="text-gray-500 text-center py-2">No results found</li>
-                )}
+                        {weatherError && <p className="text-red-500 text-center py-4">{weatherError.message}</p>}
 
-                {hasMoreBottom && (
-                    <li className="text-center text-gray-400 font-bold tracking-widest pt-1">
-                        ...
-                    </li>
-                )}
-            </ul>
-        </div>
+                        {weatherData && (
+                          <div className="flex flex-col gap-2">
+                            <h2 className="text-xl font-bold border-b pb-2">Weather in {weatherData.location}, {weatherData.country}</h2>
+                            <div className="flex items-center gap-4 py-2">
+                              <Image src={`https:${weatherData.conditionIcon}`} alt={weatherData.condition} width={64} height={64} />
+                              <p className="text-lg font-semibold">{weatherData.condition}</p>
+                            </div>
+                            <div className="grid grid-cols-2 gap-4 mt-2">
+                              <div>
+                                <p className="text-sm text-gray-500">Temperature</p>
+                                <p className="font-medium">{weatherData.temperatureCelsius}°C</p>
+                              </div>
+                              <div>
+                                <p className="text-sm text-gray-500">Wind</p>
+                                <p className="font-medium">{weatherData.windKph} km/h</p>
+                              </div>
+                              <div>
+                                <p className="text-sm text-gray-500">Humidity</p>
+                                <p className="font-medium">{weatherData.humidity}%</p>
+                              </div>
+                            </div>
+                          </div>
+                        )}
+                      </ModalContent>
+                      </ModalBasicLayout>
+                    </Modal>
+                  )}
+        </main>
 	)
 
 }

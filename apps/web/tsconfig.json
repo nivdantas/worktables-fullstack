@@ -1,5 +1,5 @@
 {
-  "extends": "ts-config/front.json",
+  "extends": "@repo/ts-config/front.json",
   "include": [
     "next-env.d.ts",
     "**/*.ts",
