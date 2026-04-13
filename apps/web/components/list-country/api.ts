@@ -32,7 +32,7 @@ export const COUNTRIES_QUERY = `
 
 const getColumnText = (
   item: MondayItem,
-  columnId: string | undefined
+  columnId: string | undefined,
 ): string | null => {
   if (!columnId) return null;
   const raw = item.column_values.find((cv) => cv.id === columnId)?.text;
@@ -49,7 +49,7 @@ const mapItemToCountry = (
     area?: string;
     currency?: string;
     currencyName?: string;
-  }
+  },
 ): Country => {
   const name = cleanNullableText(item.name) ?? item.name;
 
@@ -67,7 +67,7 @@ const mapItemToCountry = (
 };
 
 export const fetchCountries = async (
-  query: string = COUNTRIES_QUERY
+  query: string = COUNTRIES_QUERY,
 ): Promise<Country[]> => {
   const response = (await monday.api(query)) as MondayApiResponse;
   const board = response?.data?.boards?.[0];
@@ -87,7 +87,7 @@ export const fetchCountries = async (
   };
 
   return board.items_page.items.map((item: MondayItem) =>
-    mapItemToCountry(item, columnIds)
+    mapItemToCountry(item, columnIds),
   );
 };
 

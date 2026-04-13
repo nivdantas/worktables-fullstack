@@ -23,7 +23,7 @@ export const normalizeText = (value: string): string =>
     .trim();
 
 export const cleanNullableText = (
-  value: string | null | undefined
+  value: string | null | undefined,
 ): string | null => {
   if (!value) return null;
   const cleaned = fixText(value).trim();
@@ -31,7 +31,7 @@ export const cleanNullableText = (
 };
 
 export const parseNumericValue = (
-  value: string | null | undefined
+  value: string | null | undefined,
 ): number | null => {
   const cleaned = cleanNullableText(value);
   if (!cleaned) return null;
@@ -66,7 +66,7 @@ export const parseNumericValue = (
 
 export const findColumnByTitle = (
   columns: MondayColumn[],
-  title: string
+  title: string,
 ): MondayColumn | undefined => {
   const target = normalizeText(title);
   return columns.find((col) => normalizeText(col.title) === target);
@@ -74,7 +74,7 @@ export const findColumnByTitle = (
 
 export const findColumnByTitleIncludes = (
   columns: MondayColumn[],
-  titlePart: string
+  titlePart: string,
 ): MondayColumn | undefined => {
   const target = normalizeText(titlePart);
   return columns.find((col) => normalizeText(col.title).includes(target));
@@ -82,5 +82,6 @@ export const findColumnByTitleIncludes = (
 
 export const formatRequestedPlace = (
   countryName: string,
-  capital: string | null
-): string => (capital && capital.length > 0 ? `${capital}, ${countryName}` : countryName);
+  capital: string | null,
+): string =>
+  capital && capital.length > 0 ? `${capital}, ${countryName}` : countryName;

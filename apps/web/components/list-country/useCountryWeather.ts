@@ -32,7 +32,9 @@ export default function useCountryWeather(): UseCountryWeatherResult {
   const [searchValue, setSearchValue] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedCountry, setSelectedCountry] = useState<Country | null>(null);
-  const [selectedLocationQuery, setSelectedLocationQuery] = useState<string | null>(null);
+  const [selectedLocationQuery, setSelectedLocationQuery] = useState<
+    string | null
+  >(null);
 
   const {
     data: countries = [],
@@ -41,7 +43,7 @@ export default function useCountryWeather(): UseCountryWeatherResult {
   } = useSWR<Country[]>(COUNTRIES_QUERY, fetchCountries);
   const isAntarcticaQuery = useMemo(
     () => selectedLocationQuery?.trim().toLowerCase() === "antarctica",
-    [selectedLocationQuery]
+    [selectedLocationQuery],
   );
 
   const weatherUrl =
@@ -58,7 +60,7 @@ export default function useCountryWeather(): UseCountryWeatherResult {
   const weatherErrorMessage =
     isModalOpen && isAntarcticaQuery
       ? "Antarctica doesn't have weather data on WeatherAPI."
-      : (weatherError as Error | undefined)?.message ?? null;
+      : ((weatherError as Error | undefined)?.message ?? null);
 
   const filteredCountries = useMemo(() => {
     const normalizedSearch = searchValue.trim().toLowerCase();
@@ -80,7 +82,10 @@ export default function useCountryWeather(): UseCountryWeatherResult {
   }, [countries, searchValue]);
 
   const handleCountryClick = (country: Country) => {
-    const locationQuery = formatRequestedPlace(country.name, country.capital ?? null);
+    const locationQuery = formatRequestedPlace(
+      country.name,
+      country.capital ?? null,
+    );
     setSelectedCountry(country);
     setSelectedLocationQuery(locationQuery);
     setIsModalOpen(true);

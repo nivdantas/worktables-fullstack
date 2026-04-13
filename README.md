@@ -91,6 +91,7 @@ WEB_PORT=3000
 ```
 
 > Important: `WEATHER_API_KEY` is required for backend weather requests.
+
 ---
 
 ## How to Run (Docker)
@@ -173,7 +174,7 @@ Feature folder (`components/list-country`):
   - delegates to service
 - `src/services/weather.service.ts`
   - calls WeatherAPI
-  - maps raw API response to app 
+  - maps raw API response to app
 - `src/middleware/error.middleware.ts`
   - centralized JSON error response
 
@@ -193,7 +194,8 @@ When selected location query resolves to `"Antarctica"`:
 > `Antarctica doesn't have weather data on WeatherAPI.` (because Antarctica isn't a country)
 
 ---
-### Lighthouse verification 
+
+### Lighthouse verification
 
 Recent measured scores:
 

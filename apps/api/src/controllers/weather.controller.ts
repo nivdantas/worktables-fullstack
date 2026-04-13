@@ -1,16 +1,15 @@
-import { Request, Response, RequestHandler, NextFunction } from 'express';
-import { fetchWeatherByCountry } from '../services/weather.service';
-import { WeatherResponse, ApiErrorResponse } from '@repo/types';
-export const getCountryWeather: RequestHandler<{country: string}, WeatherResponse | ApiErrorResponse> = async (
-  req,
-  res,
-  next
-) => {
+import { Request, Response, RequestHandler, NextFunction } from "express";
+import { fetchWeatherByCountry } from "../services/weather.service";
+import { WeatherResponse, ApiErrorResponse } from "@repo/types";
+export const getCountryWeather: RequestHandler<
+  { country: string },
+  WeatherResponse | ApiErrorResponse
+> = async (req, res, next) => {
   try {
     const { country } = req.params;
 
     if (!country) {
-      res.status(400).json({ error: 'Country identifier is required' });
+      res.status(400).json({ error: "Country identifier is required" });
       return;
     }
 

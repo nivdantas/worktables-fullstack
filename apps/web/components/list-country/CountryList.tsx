@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect, useMemo } from "react";
 import { List, ListItem, ListTitle } from "@vibe/core/next";
 import type { Country } from "./types";
 
@@ -9,6 +10,8 @@ interface CountryListProps {
   emptyMessage?: string;
   className?: string;
   maxHeight?: number;
+  mobileMaxHeight?: number;
+  mobileBreakpoint?: number;
 }
 
 export default function CountryList({
@@ -16,7 +19,30 @@ export default function CountryList({
   onCountryClick,
   emptyMessage = "No results found",
   maxHeight = 420,
+  mobileMaxHeight = 800,
+  mobileBreakpoint = 981,
 }: CountryListProps) {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia(`(max-width: ${mobileBreakpoint}px)`);
+
+    const update = () => setIsMobile(mediaQuery.matches);
+    update();
+
+    mediaQuery.addEventListener("change", update);
+    window.addEventListener("resize", update);
+
+    return () => {
+      mediaQuery.removeEventListener("change", update);
+      window.removeEventListener("resize", update);
+    };
+  }, [mobileBreakpoint]);
+
+  const resolvedMaxHeight = useMemo(
+    () => (isMobile ? mobileMaxHeight : maxHeight),
+    [isMobile, mobileMaxHeight, maxHeight],
+  );
   return (
     <section className="w-full" aria-label="Countries section">
       <div className="mb-2 flex items-center justify-between px-1">
@@ -31,7 +57,7 @@ export default function CountryList({
       <List
         aria-label="Countries list"
         className="countries-list-scroll w-full rounded-xl bg-white/70 p-2 shadow-sm dark:bg-slate-900/30 border-2 border-slate-400 dark:border-slate-800"
-        maxHeight={maxHeight}
+        maxHeight={resolvedMaxHeight}
       >
         <>
           {countries.map((country) => (

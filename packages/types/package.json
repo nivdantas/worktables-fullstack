@@ -8,6 +8,6 @@
     "typescript": "^6.0.2"
   },
   "devDependencies": {
-	"@repo/ts-config" : "*"
+    "@repo/ts-config": "*"
   }
 }

@@ -6,38 +6,37 @@
 }
 
 :root {
-	--background: #ffffff;
-	--foreground: #000;
-	--color-button-modal: #0f172a;
+  --background: #ffffff;
+  --foreground: #000;
+  --color-button-modal: #0f172a;
 }
 
-@media (prefers-color-scheme: dark)  {
-	:root {
-		--background: #181b34;
-		--foreground: #fff;
-		--color-button-modal: #ffffff;
-	}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #181b34;
+    --foreground: #fff;
+    --color-button-modal: #ffffff;
+  }
 
-	#weather-modal button svg {
-		color: var(--color-button-modal);
-		fill: var(--color-button-modal) !important;
-		stroke: var(--color-button-modal) !important;
-	}
-	.countries-list-scroll {
-		scrollbar-color: #64748b #0f172a;
-	}
+  #weather-modal button svg {
+    color: var(--color-button-modal);
+    fill: var(--color-button-modal) !important;
+    stroke: var(--color-button-modal) !important;
+  }
+  .countries-list-scroll {
+    scrollbar-color: #64748b #0f172a;
+  }
 
-	.countries-list-scroll::-webkit-scrollbar-track {
-		background: #0f172a;
-	}
-	.countries-list-scroll::-webkit-scrollbar-thumb {
-		background:#64748b;
-		border: 2px solid #0f172a;
-	}
-	.countries-list-scroll:hover::-webkit-scrollbar-thumb {
-		background-color: #94a3b8;
-	}
-
+  .countries-list-scroll::-webkit-scrollbar-track {
+    background: #0f172a;
+  }
+  .countries-list-scroll::-webkit-scrollbar-thumb {
+    background: #64748b;
+    border: 2px solid #0f172a;
+  }
+  .countries-list-scroll:hover::-webkit-scrollbar-thumb {
+    background-color: #94a3b8;
+  }
 }
 
 body {
@@ -46,28 +45,27 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-
 #weather-modal button svg {
-	color: var(--color-button-modal);
-	fill: var(--color-button-modal) !important;
-	stroke: var(--color-button-modal) !important;
+  color: var(--color-button-modal);
+  fill: var(--color-button-modal) !important;
+  stroke: var(--color-button-modal) !important;
 }
 
 .countries-list-scroll {
-	scrollbar-color: #94a3b8 transparent;
+  scrollbar-color: #94a3b8 transparent;
 }
 
 .countries-list-scroll::-webkit-scrollbar {
-	background: transparent;
+  background: transparent;
 }
 
 .countries-list-scroll::-webkit-scrollbar-thumb {
-	background: #94a3b8;
-	border-radius: 999px;
-	border: 2px solid transparent;
-	background-clip: content-box;
+  background: #94a3b8;
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: content-box;
 }
 
 .countries-list-scroll:hover::-webkit-scrollbar-thumb {
-	background-color: #64748b;
+  background-color: #64748b;
 }
