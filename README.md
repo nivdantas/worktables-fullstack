@@ -9,15 +9,14 @@ This repository implements the **Worktables Full Stack Developer Hiring Test** a
 
 ### Frontend
 
-- Uses **Next.js** (React-based) and **TypeScript**.
+- Uses **Next.js** and **TypeScript**.
 - Fetches countries from monday board via `monday-sdk-js`.
 - Calls backend weather route and renders weather in modal.
 - Responsive layout and modern UI components from monday ecosystem (`@vibe/core`).
 
 ### Backend
 
-- Uses **Node.js framework** (**Express 5**) + **TypeScript**.
-- Exposes REST endpoint to fetch weather by country.
+- Uses **Express framwork** + **TypeScript**.
 - Calls **WeatherAPI** using API key.
 - Includes basic error handling middleware and input validation.
 
@@ -58,7 +57,7 @@ worktables/
 ├─ packages/
 │  ├─ types/                        # Shared interfaces for weather payloads/errors
 │  └─ ts-config/                    # Shared tsconfig presets
-├─ .env.example						# .env configs example
+├─ .env.example						          # .env configs example
 ├─ docker-compose.yml
 ├─ Dockerfile
 ├─ package.json
@@ -69,7 +68,7 @@ worktables/
 
 ## Prerequisites
 
-- **Bun** installed (recommended runtime/package manager for this repo).
+- **Bun** installed (recommended if running local).
 - **Node.js**.
 - A valid **WeatherAPI key**.
 - Access to the monday.com board/view.
@@ -133,23 +132,10 @@ Local url/ports:
 - Frontend: `http://localhost:3000`
 - Backend: `http://localhost:3001`
 
-Additional scripts:
-
-```bash
-bun run build
-
-bun run start
-
-bun run dev
-
-```
-
-
-
 ## Frontend Architecture
 
 - `components/ListCountry.tsx`  
-  Composes search/list/modal and wires hook state to UI.
+  Composes search, list and modal.
 
 Feature folder (`components/list-country`):
 
@@ -202,7 +188,7 @@ Shared interfaces are exported by `@repo/types`.
 When selected location query resolves to `"Antarctica"`:
 
 - Weather API request is **not executed**.
-- Modal shows a clear message:
+- Modal shows a message:
 
 > `Antarctica doesn't have weather data on WeatherAPI.` (because Antarctica isn't a country)
 
