@@ -1,10 +1,13 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import { fileURLToPath } from 'bun';
 import weatherRoutes from './routes/weather.route';
 import { errorHandler } from './middleware/error.middleware';
 
-dotenv.config();
+dotenv.config({
+	path: fileURLToPath(new URL("../../../.env", import.meta.url)),
+});
 
 const app = express();
 const PORT = process.env.PORT || 3001;

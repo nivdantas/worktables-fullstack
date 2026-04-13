@@ -7,7 +7,7 @@ export const fetchWeatherByCountry = async (country: string) => {
   }
 
   const url = `http://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${encodeURIComponent(country)}`;
-
+  console.log(country)
   const response = await fetch(url);
   const json = await response.json();
   if (!response.ok) {

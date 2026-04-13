@@ -12,6 +12,7 @@ dist/
 build/
 
 # Monorepo tooling (if using Turborepo)
+
 .turbo
 *.tsbuildinfo
 
@@ -43,5 +44,6 @@ Thumbs.db
 # IDEs and Editors
 .idea/
 .vscode/
+.idea
 *.swp
 *.swo

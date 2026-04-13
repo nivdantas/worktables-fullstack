@@ -5,11 +5,13 @@
   "files": [
     "base.json",
     "front.json",
-    "back.json"
+    "back.json",
+    "lib.json"
   ],
   "exports": {
     "./base.json": "./base.json",
     "./front.json": "./front.json",
-    "./back.json": "./back.json"
+    "./back.json": "./back.json",
+    "./lib.json": "./lib.json"
   }
 }
