@@ -103,8 +103,13 @@ WEB_PORT=3000
 > Important: `WEATHER_API_KEY` is required for backend weather requests.
 
 ---
+## How to Run
 
-## How to Run (Docker)
+First, clone the project 
+```bash
+git clone https://github.com/nivdantas/worktables-fullstack.git
+```
+## Docker (How to Run)
 
 Build and run both services:
 
@@ -123,7 +128,7 @@ Make sure `WEATHER_API_KEY` is available in environment before launching compose
 
 ---
 
-## How to Run (Local)
+## Local (How to Run)
 
 From repository root:
 
