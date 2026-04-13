@@ -40,7 +40,7 @@ export default function CountryList({
               label={country.name}
               value={country.name}
               onClick={() => onCountryClick(country)}
-              className="rounded-lg px-2 py-1 transition-colors dark:text-white! hover:bg-slate-100 dark:hover:bg-slate-800/70"
+              className="rounded-lg px-2 py-1 transition-colors dark:text-white! hover:bg-slate-100 dark:hover:bg-slate-800/70 mb-3 lg:mb-1 *:text-2xl! lg:*:text-base!"
             />
           ))}
 
