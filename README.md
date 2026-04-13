@@ -1,5 +1,15 @@
 # Worktables Hiring Test — Full Stack Monorepo
 
+<table>
+  <tr>
+    <td align="center">
+      <img src="./images/left.png" alt="Left image" width="420" />
+    </td>
+    <td align="center">
+      <img src="./images/right.png" alt="Right image" width="420" />
+    </td>
+  </tr>
+</table>
 This repository implements the **Worktables Full Stack Developer Hiring Test** as a monorepo with:
 
 - **Frontend (`apps/web`)**: Next.js + TypeScript app rendered in monday.com Board View.
