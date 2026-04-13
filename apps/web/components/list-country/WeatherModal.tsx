@@ -24,8 +24,8 @@ const formatArea = (value: number | null | undefined): string =>
     ? `${value.toLocaleString()} km²`
     : "N/A";
 
-const StatCard = ({ label, value }: { label: string; value: string }) => (
-  <div className="rounded-lg bg-slate-50/70 px-3 py-2 dark:bg-slate-800/70">
+const StatCard = ({ label, value, className}: { label: string; value: string; className?: string}) => (
+  <div className={`rounded-lg bg-slate-50/70 px-3 py-2 dark:bg-slate-800/70 ${className}`}>
     <p className="text-xs text-slate-500 dark:text-slate-300">{label}</p>
     <p className="mt-1 text-sm font-semibold text-slate-800 dark:text-white">{value}</p>
   </div>
@@ -97,12 +97,13 @@ export default function WeatherModal({
                 <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
                   <StatCard label="Capital" value={selectedCountry?.capital ?? "N/A"} />
                   <StatCard label="Region" value={selectedCountry?.region ?? "N/A"} />
-                  <StatCard label="Subregion" value={selectedCountry?.subregion ?? "N/A"} />
-                  <StatCard label="Population" value={formatNumber(selectedCountry?.population)} />
-                  <StatCard label="Area" value={formatArea(selectedCountry?.area)} />
+                  <StatCard label="Subregion" value={selectedCountry?.subregion ?? "N/A"} className="hidden lg:block" />
+                  <StatCard label="Population" value={formatNumber(selectedCountry?.population)} className="hidden lg:block" />
+                  <StatCard label="Area" value={formatArea(selectedCountry?.area)} className="hidden lg:block" />
                   <StatCard
                     label="Currency"
                     value={selectedCountry?.currencyName ?? selectedCountry?.currency ?? "N/A"}
+                    className="hidden lg:block"
                   />
                 </div>
               </div>
