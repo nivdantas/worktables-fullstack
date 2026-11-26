@@ -1,4 +1,4 @@
-import { WeatherApiResponse } from "@repo/types";
+import type { WeatherApiResponse } from "@repo/types";
 export const fetchWeatherByCountry = async (country: string) => {
   const apiKey = process.env.WEATHER_API_KEY;
 
@@ -6,15 +6,19 @@ export const fetchWeatherByCountry = async (country: string) => {
     throw new Error("WEATHER_API_KEY is not defined in environment variables");
   }
 
-  const url = `http://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${encodeURIComponent(country)}`;
-  const response = await fetch(url);
-  const json = await response.json();
+  const url = new URL("https://api.weatherapi.com/v1/current.json");
+  url.searchParams.set("key", apiKey);
+  url.searchParams.set("q", country);
+
+  const response = await fetch(url, {
+    redirect: "error",
+    signal: AbortSignal.timeout(5_000),
+  });
   if (!response.ok) {
-    const errorData = json as WeatherApiResponse;
-    throw new Error(errorData.error?.message || "Failed to fetch weather data");
+    throw new Error(`WeatherAPI returned HTTP ${response.status}`);
   }
 
-  const data = json as WeatherApiResponse;
+  const data = (await response.json()) as WeatherApiResponse;
 
   return {
     location: data.location.name,
