@@ -6,10 +6,14 @@ export const errorHandler = (
   res: Response,
   next: NextFunction,
 ) => {
-  console.error(`[Error]: ${err.message}`);
+  if (res.headersSent) {
+    next(err);
+    return;
+  }
+
+  console.error("Weather request failed");
 
   res.status(500).json({
     error: "Internal Server Error",
-    message: err.message,
   });
 };
